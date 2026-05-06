@@ -1,7 +1,6 @@
 package com.ecommerce.project.model;
 
-
-public class Category {
+public class Category{
     private Long categoryID;
     private String categoryName;
 
