@@ -4,7 +4,7 @@ import com.ecommerce.service.categoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.ecommerce.project.model.Category;
+import com.ecommerce.model.Category;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.ecommerce.service;
 
-import com.ecommerce.project.model.Category;
+import com.ecommerce.model.Category;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -43,7 +43,6 @@ public class categoryServiceImpl implements categoryService{
         if (optionalCategory.isPresent()){
             Category currentCategory=optionalCategory.get();
             currentCategory.setCategoryName(category.getCategoryName());
-//            return "Category "+categoryId+" removed.";
             return currentCategory;
         }
         else{
