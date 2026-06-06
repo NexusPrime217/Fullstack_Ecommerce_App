@@ -7,10 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.ecommerce.model.Category;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -35,15 +32,15 @@ public class categoryController {
     }
 
     @DeleteMapping("/admin/categories/{categoryId}")
-    public ResponseEntity<String> deleteCategoryById(@PathVariable Long categoryId){
-        String status = categoryService.deleteCategoryById(categoryId);
-        return new ResponseEntity<>(status, HttpStatus.OK);
+    public ResponseEntity<CategoryDTO> deleteCategoryById(@PathVariable Long categoryId){
+        CategoryDTO categoryDTO = categoryService.deleteCategoryById(categoryId);
+        return new ResponseEntity<>(categoryDTO, HttpStatus.OK);
     }
 
     @PutMapping("/public/categories/{categoryId}")
-    public ResponseEntity<String> updateCategory(@RequestBody Category category, @PathVariable Long categoryId){
-        Category savedCategory=categoryService.updateCategory(category,categoryId);
-        return new ResponseEntity<>("Category "+categoryId+" updated.",HttpStatus.OK);
+    public ResponseEntity<CategoryDTO> updateCategory(@RequestBody CategoryDTO categoryDTO, @PathVariable Long categoryId){
+        CategoryDTO savedCategoryDTO=categoryService.updateCategory(categoryDTO,categoryId);
+        return new ResponseEntity<>(savedCategoryDTO,HttpStatus.OK);
     }
 }
 
