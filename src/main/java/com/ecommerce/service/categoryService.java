@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Locale;
 
 public interface categoryService {
-    CategoryResponse fetchAllCategory();
+    CategoryResponse fetchAllCategory(Integer pageNumber, Integer pageSize,String sortBy, String sortOrder);
 
     CategoryDTO addCategory(CategoryDTO categoryDTO);
 

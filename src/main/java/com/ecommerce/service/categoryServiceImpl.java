@@ -8,6 +8,10 @@ import com.ecommerce.payload.CategoryResponse;
 import com.ecommerce.repository.categoryRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
@@ -30,16 +34,30 @@ public class categoryServiceImpl implements categoryService{
 
 
     @Override
-    public CategoryResponse fetchAllCategory() {
-        List<Category> categories=CategoryRepository.findAll();
+    public CategoryResponse fetchAllCategory(Integer pageNumber, Integer pageSize,String sortBy, String sortOrder) {
+        Sort sortByAndOrder=sortOrder.equalsIgnoreCase("asc")
+                ?Sort.by(sortBy).ascending()
+                :Sort.by(sortBy).descending();
+
+        Pageable pageDetails= PageRequest.of(pageNumber,pageSize,sortByAndOrder);
+        Page<Category> categoryPage=CategoryRepository.findAll(pageDetails);
+
+        List<Category> categories=categoryPage.getContent();
         if (categories.isEmpty()){
             throw new APIException("There are no categories created yet!");
         }
         List<CategoryDTO> categoriesDTO=categories.stream()
                 .map(category -> modelMapper.map(category, CategoryDTO.class))
                 .toList();
+
         CategoryResponse categoryResponse=new CategoryResponse();
         categoryResponse.setContent(categoriesDTO);
+        categoryResponse.setPageNumber(categoryPage.getNumber());
+        categoryResponse.setPageSize(categoryPage.getSize());
+        categoryResponse.setTotalElements(categoryPage.getNumberOfElements());
+        categoryResponse.setTotalPages(categoryPage.getTotalPages());
+        categoryResponse.setLastPage(categoryPage.isLast());
+
         return categoryResponse;
     }
 
