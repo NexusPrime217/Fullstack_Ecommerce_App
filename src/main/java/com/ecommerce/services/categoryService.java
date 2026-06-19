@@ -1,11 +1,7 @@
-package com.ecommerce.service;
+package com.ecommerce.services;
 
-import com.ecommerce.model.Category;
-import com.ecommerce.payload.CategoryDTO;
-import com.ecommerce.payload.CategoryResponse;
-
-import java.util.List;
-import java.util.Locale;
+import com.ecommerce.payloads.CategoryDTO;
+import com.ecommerce.payloads.CategoryResponse;
 
 public interface categoryService {
     CategoryResponse fetchAllCategory(Integer pageNumber, Integer pageSize,String sortBy, String sortOrder);

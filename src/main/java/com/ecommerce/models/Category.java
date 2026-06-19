@@ -1,10 +1,9 @@
-package com.ecommerce.model;
+package com.ecommerce.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.springframework.boot.context.properties.bind.Name;
 
 @Entity(name="categories")
 @Data
