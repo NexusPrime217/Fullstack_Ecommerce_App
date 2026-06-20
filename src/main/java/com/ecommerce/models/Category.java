@@ -23,5 +23,7 @@ public class Category{
     private String categoryName;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<Product> products;
 }
