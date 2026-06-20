@@ -4,6 +4,7 @@ import com.ecommerce.config.AppConstants;
 import com.ecommerce.payloads.ProductDTO;
 import com.ecommerce.payloads.ProductResponse;
 import com.ecommerce.services.productService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class productController {
     private productService productService;
 
     @PostMapping("/admin/categories/{CategoryId}/product")
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO, @PathVariable Long CategoryId){
+    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO productDTO, @PathVariable Long CategoryId){
         return new ResponseEntity<>(productService.createProduct(productDTO,CategoryId),HttpStatus.CREATED);
     }
 

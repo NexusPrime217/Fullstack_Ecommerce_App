@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.List;
+
 @Entity(name="categories")
 @Data
 @NoArgsConstructor
@@ -19,4 +21,7 @@ public class Category{
     @Size(min=5,message="Minimum category name size should be 5")
     @Column(name="category_name")
     private String categoryName;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private List<Product> products;
 }

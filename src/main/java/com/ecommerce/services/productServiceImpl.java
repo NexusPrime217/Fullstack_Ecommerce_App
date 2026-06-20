@@ -43,6 +43,12 @@ public class productServiceImpl implements productService{
         Category category=categoryRepository.findById(categoryId)
                 .orElseThrow(()->new ResourceNotFoundException("Category ID","Category",categoryId));
 
+        if (productRepository.existsByProductName(productDTO.getProductName())){
+            throw new APIException(
+                    "Product with ProductName: '"+productDTO.getProductName()+"' already exists."
+            );
+        }
+
         Product product=modelMapper.map(productDTO,Product.class);
         product.setCategory(category);
         //Calculate Special price: Price after discount.
@@ -96,6 +102,8 @@ public class productServiceImpl implements productService{
         Page<Product> productPage=productRepository.findByCategory(category,pageDetails);
 
         List<Product> productList=productPage.getContent();
+        if (productList.isEmpty())
+            throw new APIException("There are no products with category name: "+category.getCategoryName());
         List<ProductDTO> productDTOList=productList.stream()
                 .map(product -> modelMapper.map(product,ProductDTO.class))
                 .toList();
@@ -126,6 +134,8 @@ public class productServiceImpl implements productService{
         Page<Product> productPage = productRepository.findByProductNameLikeIgnoreCase('%'+keyword+'%',pageDetails);
 
         List<Product> productList = productPage.getContent();
+        if (productList.isEmpty())
+            throw new APIException("There are no products with keyword: "+keyword);
         List<ProductDTO> productDTOList=productList.stream()
                 .map(product->modelMapper.map(product,ProductDTO.class))
                 .toList();

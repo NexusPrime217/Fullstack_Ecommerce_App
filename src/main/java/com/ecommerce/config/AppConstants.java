@@ -5,4 +5,12 @@ public class AppConstants {
     public static final String PAGE_Size="50";
     public static final String SORT_CATEGORIES_BY = "categoryID";
     public static final String SORT_DIR = "asc";
+    public static final int MIN_PRODUCT_NAME= 3;
+    public static final int MAX_PRODUCT_NAME= 100;
+    public static final int MIN_PRODUCT_DESC= 3;
+    public static final int MAX_PRODUCT_DESC= 1000;
+    public static final int MIN_QUANTITY= 1;
+    public static final int MAX_QUANTITY= 100;
+    public static final int MIN_DISCOUNT= 0;
+    public static final int MAX_DISCOUNT= 100;
 }
