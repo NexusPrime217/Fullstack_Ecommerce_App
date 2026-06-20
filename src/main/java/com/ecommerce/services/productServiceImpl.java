@@ -10,11 +10,13 @@ import com.ecommerce.repositories.categoryRepository;
 import com.ecommerce.repositories.productRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -30,11 +32,18 @@ public class productServiceImpl implements productService{
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private FileService fileService;
+
+    @Value("${project.image}")
+    private String path;
+
     @Override
-    public ProductDTO createProduct(Product product, Long categoryId) {
+    public ProductDTO createProduct(ProductDTO productDTO, Long categoryId) {
         Category category=categoryRepository.findById(categoryId)
                 .orElseThrow(()->new ResourceNotFoundException("Category ID","Category",categoryId));
 
+        Product product=modelMapper.map(productDTO,Product.class);
         product.setCategory(category);
         //Calculate Special price: Price after discount.
         Double specialPrice=product.getPrice()-(product.getPrice()*(product.getDiscount())*0.01);
@@ -72,4 +81,113 @@ public class productServiceImpl implements productService{
 
         return productResponse;
     }
+
+    @Override
+    public ProductResponse getProdByCat(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+
+        Category category=categoryRepository.findById(categoryId)
+                .orElseThrow(()->new ResourceNotFoundException("Category ID","Category",categoryId));
+
+        Sort sortByAndOrder=sortOrder.equalsIgnoreCase("asc")
+                 ?Sort.by(sortBy).ascending()
+                 :Sort.by(sortBy).descending();
+
+        Pageable pageDetails=PageRequest.of(pageNumber,pageSize,sortByAndOrder);
+        Page<Product> productPage=productRepository.findByCategory(category,pageDetails);
+
+        List<Product> productList=productPage.getContent();
+        List<ProductDTO> productDTOList=productList.stream()
+                .map(product -> modelMapper.map(product,ProductDTO.class))
+                .toList();
+
+        ProductResponse productResponse=new ProductResponse();
+        //Set Metadata
+        productResponse.setPageNumber(pageNumber);
+        productResponse.setPageSize(pageSize);
+        productResponse.setTotalPages(productPage.getTotalPages());
+        productResponse.setTotalElements(productPage.getNumberOfElements());
+        productResponse.setLastPage(productPage.isLast());
+
+        //Set Content
+        productResponse.setContent(productDTOList);
+
+        return productResponse;
+
+    }
+
+    @Override
+    public ProductResponse searchProdByKeyword(String keyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+        Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
+                ?Sort.by(sortBy).ascending()
+                :Sort.by(sortBy).descending();
+
+//        System.out.printf("PRODUCT SEARCH STARTED!!!");
+        Pageable pageDetails = PageRequest.of(pageNumber,pageSize,sortByAndOrder);
+        Page<Product> productPage = productRepository.findByProductNameLikeIgnoreCase('%'+keyword+'%',pageDetails);
+
+        List<Product> productList = productPage.getContent();
+        List<ProductDTO> productDTOList=productList.stream()
+                .map(product->modelMapper.map(product,ProductDTO.class))
+                .toList();
+
+        ProductResponse productResponse=new ProductResponse();
+        //metadata
+        productResponse.setPageNumber(pageNumber);
+        productResponse.setPageSize(pageSize);
+        productResponse.setTotalPages(productPage.getTotalPages());
+        productResponse.setTotalElements(productPage.getNumberOfElements());
+        productResponse.setLastPage(productPage.isLast());
+        //content
+        productResponse.setContent(productDTOList);
+        return productResponse;
+    }
+
+    @Override
+    public ProductDTO updateProduct(ProductDTO productDTO, Long productId) {
+        Product productFromDB= productRepository.findById(productId)
+                .orElseThrow(()->new ResourceNotFoundException("ProductId","Product",productId));
+
+
+        productFromDB.setProductName(productDTO.getProductName());
+        productFromDB.setDescription(productDTO.getDescription());
+        productFromDB.setPrice(productDTO.getPrice());
+        productFromDB.setDiscount(productDTO.getDiscount());
+        productFromDB.setSpecialPrice(productDTO.getPrice()-(productDTO.getPrice()*productDTO.getDiscount()*0.01));
+        productFromDB.setQuantity(productDTO.getQuantity());
+
+        Product savedProduct=productRepository.save(productFromDB);
+        return modelMapper.map(savedProduct,ProductDTO.class);
+    }
+
+    @Override
+    public String deleteProduct(Long productId) {
+        Product productToDelete= productRepository.findById(productId)
+                .orElseThrow(()->new ResourceNotFoundException("ProductId","Product",productId));
+
+        productRepository.delete(productToDelete);
+        return "Product deleted successfully!";
+    }
+
+    @Override
+    public ProductDTO updateProductImage(MultipartFile image, Long productId) {
+        //Get product from the DB
+        Product productFromDB= productRepository.findById(productId)
+                .orElseThrow(()->new ResourceNotFoundException("ProductId","Product",productId));
+
+        //Upload image to server
+        //get the file name of uploaded image
+        String fileName=fileService.uploadImage(path,image);
+
+        //Updating the new file name to the product
+        productFromDB.setImage(fileName);
+
+        //save updated product
+        Product savedProduct=productRepository.save(productFromDB);
+
+        //return DTO after mapping the product to DTO
+        return modelMapper.map(savedProduct,ProductDTO.class);
+    }
+
+
+
 }
