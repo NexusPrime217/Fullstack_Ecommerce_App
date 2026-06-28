@@ -10,6 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(
+        name = "product",
         uniqueConstraints = @UniqueConstraint(
                 columnNames = "productName"
         )
@@ -72,4 +73,7 @@ public class Product {
     @NotNull(message = "Product must be linked with one Category")
     private Category category;
 
+    @ManyToOne
+    @JoinColumn(name="seller_id")
+    private User user;
 }
