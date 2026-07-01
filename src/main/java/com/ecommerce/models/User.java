@@ -3,8 +3,10 @@ package com.ecommerce.models;
 import com.ecommerce.config.AppConstants;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -59,4 +61,9 @@ public class User {
                 cascade = {CascadeType.MERGE,CascadeType.PERSIST},
                 orphanRemoval = true)
     private Set<Product> products;
+
+    public User(@NotBlank @Size(min=AppConstants.MIN_USERNAME, max= AppConstants.MAX_USERNAME,message = "Username must be between {min} and {max}.") String username,
+                @NotBlank @Size(max=50) @Email String email,
+                @NotBlank @Size(min=AppConstants.MIN_PASSWORD, max = AppConstants.MAX_PASSWORD,message = "Password must be between {min} and {max}")String password) {
+    }
 }
