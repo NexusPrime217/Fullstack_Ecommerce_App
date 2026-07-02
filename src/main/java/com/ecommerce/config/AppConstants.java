@@ -23,7 +23,7 @@ public class AppConstants {
     public static final int MIN_USERNAME= 4;
 
 
-    public static final int MAX_PASSWORD= 30;
+    public static final int MAX_PASSWORD= 100;
     public static final int MIN_PASSWORD= 4;
 
     public static final int MIN_ADDRESS= 5;

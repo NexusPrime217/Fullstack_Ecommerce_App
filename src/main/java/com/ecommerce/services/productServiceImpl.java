@@ -6,8 +6,8 @@ import com.ecommerce.models.Category;
 import com.ecommerce.models.Product;
 import com.ecommerce.payloads.ProductDTO;
 import com.ecommerce.payloads.ProductResponse;
-import com.ecommerce.repositories.categoryRepository;
-import com.ecommerce.repositories.productRepository;
+import com.ecommerce.repositories.CategoryRepository;
+import com.ecommerce.repositories.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,10 +24,10 @@ import java.util.List;
 public class productServiceImpl implements productService{
 
     @Autowired
-    private productRepository productRepository;
+    private ProductRepository productRepository;
 
     @Autowired
-    private categoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
 
     @Autowired
     private ModelMapper modelMapper;

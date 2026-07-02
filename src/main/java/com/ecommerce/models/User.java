@@ -65,5 +65,8 @@ public class User {
     public User(@NotBlank @Size(min=AppConstants.MIN_USERNAME, max= AppConstants.MAX_USERNAME,message = "Username must be between {min} and {max}.") String username,
                 @NotBlank @Size(max=50) @Email String email,
                 @NotBlank @Size(min=AppConstants.MIN_PASSWORD, max = AppConstants.MAX_PASSWORD,message = "Password must be between {min} and {max}")String password) {
+        this.username=username;
+        this.email=email;
+        this.password=password;
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.ecommerce.config.AppConstants;
 
 @Repository
-public interface productRepository extends JpaRepository<Product,Long> {
+public interface ProductRepository extends JpaRepository<Product,Long> {
     Page<Product> findByCategory(Category category, Pageable pageDetails);
 
     Page<Product> findByProductNameLikeIgnoreCase(String keyword, Pageable pageDetails);

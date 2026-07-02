@@ -3,7 +3,7 @@ package com.ecommerce.controllers;
 import com.ecommerce.models.AppRoles;
 import com.ecommerce.models.Role;
 import com.ecommerce.models.User;
-import com.ecommerce.repositories.roleRepository;
+import com.ecommerce.repositories.RoleRepository;
 import com.ecommerce.security.jwt.JwtUtils;
 import com.ecommerce.security.repositories.UserRepository;
 import com.ecommerce.security.request.LoginRequest;
@@ -12,7 +12,6 @@ import com.ecommerce.security.response.MessageReponse;
 import com.ecommerce.security.response.UserInfoResponse;
 import com.ecommerce.security.services.UserDetailImpl;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,16 +23,20 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 
+@RestController
+@RequestMapping("/api/auth")
 public class AuthController {
 
         private JwtUtils jwtUtils;
         private AuthenticationManager authenticationManager;
         private UserRepository userRepository;
         private PasswordEncoder passwordEncoder;
-        private roleRepository roleRepository;
+        private RoleRepository roleRepository;
 
 
         @PostMapping("/signin")
@@ -65,7 +68,7 @@ public class AuthController {
 
 
         @PostMapping("/signup")
-        public  ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signupRequest){
+        public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signupRequest){
                 if (userRepository.existsByUsername(signupRequest.getUsername())){
                         return ResponseEntity
                                 .badRequest()

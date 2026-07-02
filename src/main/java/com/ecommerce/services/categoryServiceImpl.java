@@ -5,7 +5,7 @@ import com.ecommerce.exceptions.ResourceNotFoundException;
 import com.ecommerce.models.Category;
 import com.ecommerce.payloads.CategoryDTO;
 import com.ecommerce.payloads.CategoryResponse;
-import com.ecommerce.repositories.categoryRepository;
+import com.ecommerce.repositories.CategoryRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,12 +21,12 @@ import java.util.Optional;
 @Service
 public class categoryServiceImpl implements categoryService{
 
-    private final categoryRepository CategoryRepository;
+    private final CategoryRepository CategoryRepository;
 
     private final ModelMapper modelMapper;
 
     @Autowired
-    public categoryServiceImpl(categoryRepository categoryRepository, ModelMapper modelMapper) {
+    public categoryServiceImpl(CategoryRepository categoryRepository, ModelMapper modelMapper) {
         CategoryRepository = categoryRepository;
         this.modelMapper = modelMapper;
     }

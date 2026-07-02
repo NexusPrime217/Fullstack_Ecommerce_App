@@ -18,4 +18,8 @@ public class Role {
     @Enumerated(EnumType.STRING)
     @ToString.Exclude
     private AppRoles roleName;
+
+    public Role(AppRoles roleName){
+        this.roleName=roleName;
+    }
 }
