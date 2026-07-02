@@ -75,7 +75,7 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests((auth)->
                           auth.requestMatchers("/api/auth/**").permitAll()
                                   .requestMatchers("/v3/api-docs/**").permitAll()
-                                  .requestMatchers("/api/public/**").permitAll()
+//                                  .requestMatchers("/api/public/**").permitAll()
                                   .requestMatchers("/api/admin/**").permitAll()
                                   .requestMatchers("/h2-console/**").permitAll()
                          .anyRequest().authenticated()
@@ -130,7 +130,7 @@ public class WebSecurityConfig {
 
             //Create users if not already present
             if (!userRepository.existsByUsername("user1")){
-                User user1= new User("user1", "user1@gmail.com",passwordEncoder.encode("pass123"));
+                User user1= new User("user1", "user1@gmail.com",passwordEncoder.encode("password123"));
                 userRepository.save(user1);
             }
             if (!userRepository.existsByUsername("seller1")){

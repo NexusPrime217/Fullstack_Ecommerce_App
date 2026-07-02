@@ -53,6 +53,7 @@ public class JwtUtils {
                 .setSubject(username)
                 .issuedAt(new Date())
                 .expiration(expiry)
+                .signWith(key())
                 .compact();
     }
 

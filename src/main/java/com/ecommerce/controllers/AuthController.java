@@ -12,6 +12,7 @@ import com.ecommerce.security.response.MessageReponse;
 import com.ecommerce.security.response.UserInfoResponse;
 import com.ecommerce.security.services.UserDetailImpl;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -38,6 +39,14 @@ public class AuthController {
         private PasswordEncoder passwordEncoder;
         private RoleRepository roleRepository;
 
+        @Autowired
+        public AuthController(JwtUtils jwtUtils, AuthenticationManager authenticationManager, UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
+                this.jwtUtils = jwtUtils;
+                this.authenticationManager = authenticationManager;
+                this.userRepository = userRepository;
+                this.passwordEncoder = passwordEncoder;
+                this.roleRepository = roleRepository;
+        }
 
         @PostMapping("/signin")
         public ResponseEntity<?> authenticationUser(@RequestBody LoginRequest loginRequest){
@@ -88,9 +97,10 @@ public class AuthController {
                 );
 
                 Set<String> strRoles=signupRequest.getRole();
+                System.out.println(strRoles);
                 Set<Role> roles=new HashSet<>();
 
-                if (strRoles==null){
+                if (strRoles.isEmpty()){
                         Role userRole = roleRepository.findByRoleName(AppRoles.ROLE_USER)
                                 .orElseThrow(()->new RuntimeException("Error: Role is not found"));
                         roles.add(userRole);
