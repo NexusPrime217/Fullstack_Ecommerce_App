@@ -107,7 +107,7 @@ public class WebSecurityConfig {
     @Bean
     public CommandLineRunner dataInit(RoleRepository roleRepository, UserRepository userRepository,PasswordEncoder passwordEncoder){
         return args -> {
-            System.out.println("Adding users!");
+//            System.out.println("Adding users!");
             Role userRole = roleRepository.findByRoleName(AppRoles.ROLE_USER)
                     .orElseGet(()->{
                         Role newUserRole=new Role(AppRoles.ROLE_USER);
