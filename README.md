@@ -61,7 +61,7 @@ src/main/java/.../
 ## ⚙️ Getting Started
 
 ### Prerequisites
-- JDK 17+ (update to match your version)
+- JDK 21+
 - Maven 3.8+
 
 ### Run locally
