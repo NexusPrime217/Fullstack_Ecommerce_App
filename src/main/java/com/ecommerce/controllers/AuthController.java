@@ -22,12 +22,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -35,11 +31,11 @@ import java.util.*;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-        private JwtUtils jwtUtils;
-        private AuthenticationManager authenticationManager;
-        private UserRepository userRepository;
-        private PasswordEncoder passwordEncoder;
-        private RoleRepository roleRepository;
+        private final JwtUtils jwtUtils;
+        private final AuthenticationManager authenticationManager;
+        private final UserRepository userRepository;
+        private final PasswordEncoder passwordEncoder;
+        private final RoleRepository roleRepository;
 
         @Autowired
         public AuthController(JwtUtils jwtUtils, AuthenticationManager authenticationManager, UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
@@ -133,4 +129,26 @@ public class AuthController {
                 userRepository.save(user);
                 return ResponseEntity.ok().body(new MessageReponse("User created successfully"));
         }
+
+        @GetMapping("/username")
+        public String currentUsername(Authentication authentication){
+                if (authentication!=null){
+                        return authentication.getName();
+                } else{
+                        return "";
+                }
+        }
+
+        @GetMapping("/user")
+        public ResponseEntity<UserInfoResponse> getuserDetails(Authentication authentication){
+                UserDetailImpl userDetail=(UserDetailImpl) authentication.getPrincipal();
+                List<String> roles = userDetail.getAuthorities().stream()
+                        .map(item -> item.getAuthority())
+                        .toList();
+
+                UserInfoResponse userInfoResponse =new UserInfoResponse(userDetail.getId(), userDetail.getUsername(), roles);
+                return ResponseEntity.ok()
+                        .body(userInfoResponse);
+        }
+
 }
