@@ -71,10 +71,13 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain FilterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests((auth)->
-                          auth.requestMatchers("/api/auth/**").permitAll()
+                          auth.requestMatchers("/api/auth/signin").permitAll()
+                                  .requestMatchers("/api/auth/signout").permitAll()
+                                  .requestMatchers("/api/auth/signup").permitAll()
+                                  .requestMatchers("/api/auth/signin").permitAll()
                                   .requestMatchers("/v3/api-docs/**").permitAll()
 //                                  .requestMatchers("/api/public/**").permitAll()
-                                  .requestMatchers("/api/admin/**").permitAll()
+//                                  .requestMatchers("/api/admin/**").permitAll()
                                   .requestMatchers("/h2-console/**").permitAll()
                          .anyRequest().authenticated()
                 )

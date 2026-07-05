@@ -38,11 +38,14 @@ public class JwtUtils {
     //Get jwt from cookie;
     public String getJwtFromCookies(HttpServletRequest request){
         Cookie cookie= WebUtils.getCookie(request,jwtCookie);
-        if (cookie!=null){
-            return cookie.getValue();
-        }else{
+        if (cookie==null){
             return null;
         }
+        String token=cookie.getValue();
+        if (token==null || token.isBlank()){
+            return null;
+        }
+        return token;
     }
 
     //generate jwt cookie
@@ -52,6 +55,13 @@ public class JwtUtils {
                 .path("/api")
                 .maxAge(24*60*60)
                 .httpOnly(false)
+                .build();
+        return cookie;
+    }
+
+    public ResponseCookie getCleanJwtCookie(){
+        ResponseCookie cookie = ResponseCookie.from(jwtCookie,null)
+                .path("/api")
                 .build();
         return cookie;
     }
