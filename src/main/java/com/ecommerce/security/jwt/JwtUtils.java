@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.time.Instant;
 import java.util.Date;
@@ -104,7 +105,7 @@ public class JwtUtils {
 
     //Generate key
     public Key key(){
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecretKey));
+        return Keys.hmacShaKeyFor(jwtSecretKey.getBytes(StandardCharsets.UTF_8));
     }
 
     //Validate JWT
