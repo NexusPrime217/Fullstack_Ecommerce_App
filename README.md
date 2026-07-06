@@ -75,6 +75,20 @@ cd Fullstack_Ecommerce_App
 - URL: `http://localhost:8080/h2-console`
 - JDBC URL: *(fill in your configured URL)*
 
+
+### Environment Variables
+
+Configure the following environment variables before running the application:
+
+| Variable | Description |
+|----------|-------------|
+| JWTSECRET | Secret key used to sign JWT tokens |
+
+For IntelliJ:
+Run → Edit Configurations → Environment Variables
+
+Example:
+*JWTSECRET*=your-long-random-secret
 ---
 
 ## 📡 API Endpoints
