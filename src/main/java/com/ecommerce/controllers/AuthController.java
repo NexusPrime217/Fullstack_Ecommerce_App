@@ -48,8 +48,6 @@ public class AuthController {
 
         @PostMapping("/signin")
         public ResponseEntity<?> authenticationUser(@RequestBody LoginRequest loginRequest){
-                System.out.println(System.getenv("JWTSECRET"));
-                System.out.println(System.getenv("JWTSECRET").length());
                 Authentication authentication;
                 try{
                         authentication=authenticationManager
