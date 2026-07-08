@@ -61,7 +61,7 @@ public class AddressController {
             @PathVariable Long addressId
     ){
         User user = authUtil.loggedInUser();
-        AddressDTO updatedAddressDTO = addressService.updateAddress(addressDTO,addressId);
+        AddressDTO updatedAddressDTO = addressService.updateAddress(addressDTO,addressId,user.getUserId());
         return new ResponseEntity<>(updatedAddressDTO, HttpStatus.OK);
     }
 

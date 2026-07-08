@@ -5,7 +5,6 @@ import com.ecommerce.payloads.AddressDTO;
 import jakarta.validation.Valid;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface AddressService {
     AddressDTO createAddress(AddressDTO addressDTO, User user);
@@ -16,5 +15,5 @@ public interface AddressService {
 
     List<AddressDTO> getAddressByUser(User user);
 
-    AddressDTO updateAddress(@Valid AddressDTO addressDTO, Long addressId);
+    AddressDTO updateAddress(@Valid AddressDTO addressDTO, Long addressId, Long userId);
 }
