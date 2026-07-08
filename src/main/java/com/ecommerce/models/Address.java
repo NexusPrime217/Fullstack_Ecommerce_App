@@ -25,34 +25,35 @@ public class Address {
 
     @NotBlank
     @Size(min=AppConstants.MIN_ADDRESS, message = "Building name must be atleast {min} characters")
-    private String buildingName;
+    private String building;
 
     @NotBlank
     @Size(min=AppConstants.MIN_ADDRESS, message = "City name must be atleast {min} characters")
-    private String cityName;
+    private String city;
 
     @NotBlank
     @Size(min=2, message = "State name must be atleast {min} characters")
-    private String stateName;
+    private String state;
 
     @NotBlank
     @Size(min=2, message = "Country name must be atleast {min} characters")
-    private String countryName;
+    private String country;
 
     @NotBlank
-    @Size(min=6, message = "pinCode must be atleast {min} characters")
+    @Size(min=4, message = "pinCode must be atleast {min} characters")
     private String pinCode;
 
-    @ManyToMany(mappedBy = "addresses")
+    @ManyToOne
     @ToString.Exclude
-    private List<User> user;
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public Address(String street, String buildingName, String cityName, String stateName, String countryName, String pinCode) {
+    public Address(String street, String building, String city, String state, String country, String pinCode) {
         this.street = street;
-        this.buildingName = buildingName;
-        this.cityName = cityName;
-        this.stateName = stateName;
-        this.countryName = countryName;
+        this.building = building;
+        this.city = city;
+        this.state = state;
+        this.country = country;
         this.pinCode = pinCode;
     }
 }
