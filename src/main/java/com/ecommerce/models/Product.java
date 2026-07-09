@@ -51,7 +51,7 @@ public class Product {
             value=AppConstants.MAX_QUANTITY,
             message = "Maximum Quantity should be {value}"
     )
-    private Integer quantity;
+    private Integer stockQuantity;
 
     @NotNull
     @Min(
