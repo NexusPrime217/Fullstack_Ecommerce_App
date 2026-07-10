@@ -46,18 +46,12 @@ A Spring Boot–based e-commerce backend built to demonstrate production-style R
 ### 🔜 Planned
 - Swagger / OpenAPI documentation
 - Docker support
-- Deployment (Render / Railway / AWS)
 - Redis caching
 
 ### ☁️ Deployment
 Deployed on AWS Elastic Beanstalk with Amazon RDS (PostgreSQL) as the
 database. RDS access is restricted to the Beanstalk security group only.
 Instance is currently stopped to avoid costs — see Getting Started to run locally.
-
-### 🔜 Planned
-- Redis caching
-- Dockerization
-- API documentation (Swagger/OpenAPI)
 
 ---
 
@@ -145,6 +139,7 @@ Example:
 - Approach to JWT auth (token generation, filter chain, etc.)
   >On sign-in, a JWT is generated and sent to the client as an HTTP-only cookie rather than in the response body. This means the token is automatically attached to every subsequent request by the browser without JavaScript needing to handle it. A custom filter (AuthTokenFilter) intercepts each request, extracts the token from the cookie, validates it, and sets the authentication in Spring's SecurityContext. The secret key is loaded from an environment variable, not hardcoded.
 - Any tricky bugs solved (e.g., cascade behavior, FK constraint issues) — worth a short "Challenges & Learnings" section
+  - >Using @Data on both sides of a @OneToMany/@ManyToOne relationship causes infinite recursion in toString() and hashCode() because Lombok traverses the full object graph. Fixed by adding @ToString.Exclude and @EqualsAndHashCode.Exclude on the @OneToMany side (Category.products, Cart.cartItems), which also prevents unintended lazy collection loading when an entity is logged. 
   - >IDOR vulnerability in address update — The initial updateAddress implementation accepted an addressId from the URL and fetched it directly, meaning any authenticated user could modify another user's address by guessing the ID. Fixed by adding findByAddressIdAndUserId in the repository, so the query only succeeds if the address belongs to the currently logged-in user.
   - >RDS security group configuration — After deploying on Elastic Beanstalk, the app couldn't reach the RDS instance. Fixed by configuring the RDS security group to allow inbound traffic only from the Elastic Beanstalk security group rather than opening it to the public internet.
 ---
@@ -157,11 +152,11 @@ Example:
 
 ## 🗺️ Roadmap
 
-- [✅] Complete JWT authentication
-- [✅] Add role-based authorization
-- [✅] Cart & Order modules
-- [✅] Migrate to PostgreSQL
-- [✅] Deploy (Render/Railway/AWS)
+- [x] Complete JWT authentication
+- [x] Add role-based authorization
+- [x] Cart & Order modules
+- [x] Migrate to PostgreSQL
+- [x] Deploy (Render/Railway/AWS)
 -  [ ] Add Docker support
 
 ---
